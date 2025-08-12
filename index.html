@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>StreamFlow — Netflix-style Clone (Demo)</title>
+  <meta name="description" content="A lightweight single-file Netflix-style UI demo built with HTML/CSS/JS." />
+  <style>
+    :root{
+      --bg:#0b0b0c; --card:#141416; --muted:#9aa0a6; --accent:#e50914; --glass:rgba(255,255,255,0.04);
+      --radius:12px; --gap:16px; --maxw:1200px;
+      --transition:250ms cubic-bezier(.2,.9,.3,1);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%;}
+    body{
+      margin:0; background:linear-gradient(180deg,var(--bg) 0%, #060606 100%); color:#fff;
+      -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+      line-height:1.3;
+    }
+
+    /* page container */
+    .site{
+      max-width:var(--maxw); margin:24px auto; padding:18px; 
+    }
+
+    /* header */
+    header{display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:18px}
+    .brand{display:flex; align-items:center; gap:12px}
+    .logo{display:flex; align-items:center; gap:10px}
+    .logo .badge{width:44px;height:28px;background:var(--accent);border-radius:4px;display:flex;align-items:center;justify-content:center;font-weight:700}
+    .logo h1{font-size:18px;margin:0}
+
+    nav{display:flex;gap:14px; align-items:center}
+    nav a{color:var(--muted); font-size:14px; text-decoration:none}
+    .cta{background:var(--accent); color:white; padding:8px 12px; border-radius:8px; font-weight:600; text-decoration:none}
+
+    /* hero */
+    .hero{
+      position:relative; border-radius:14px; overflow:hidden; min-height:320px; display:flex; align-items:flex-end; padding:28px;
+      background-image:linear-gradient(rgba(0,0,0,0.25), rgba(0,0,0,0.65)), url('https://images.unsplash.com/photo-1505685296765-3a2736de412f?q=80&w=1600&auto=format&fit=crop&ixlib=rb-4.0.3&s=');
+      background-size:cover; background-position:center;
+      margin-bottom:26px;
+    }
+    .hero .meta{max-width:720px}
+    .hero h2{margin:0 0 8px 0; font-size:34px}
+    .hero p{color:var(--muted); margin:0 0 12px}
+    .hero .hero-actions{display:flex; gap:10px}
+    .btn{background:var(--glass); border:none; padding:10px 14px; border-radius:10px; color:#fff; cursor:pointer; font-weight:600; transition:transform var(--transition), background var(--transition)}
+    .btn:hover{transform:translateY(-3px)}
+    .btn.play{background:white; color:#000}
+
+    /* rows */
+    .row{margin-bottom:22px}
+    .row h3{margin:6px 0 12px 4px}
+    .cards{display:flex; gap:12px; overflow:auto; padding-bottom:6px}
+    .card{min-width:170px; border-radius:10px; background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.2)); box-shadow:0 6px 18px rgba(0,0,0,0.6); cursor:pointer; transition:transform var(--transition) ease, box-shadow var(--transition)}
+    .card img{display:block; width:100%; height:245px; object-fit:cover; border-radius:10px}
+    .card .title{padding:8px; font-weight:600; font-size:14px}
+    .card:hover{transform:translateY(-8px); box-shadow:0 18px 40px rgba(0,0,0,0.7)}
+
+    /* small screens */
+    @media (max-width:720px){
+      .hero{min-height:240px;padding:18px}
+      .card img{height:180px}
+      .logo h1{font-size:16px}
+    }
+
+    /* search + filter */
+    .toolbar{display:flex; gap:12px; align-items:center; margin-bottom:12px}
+    .search{flex:1}
+    .search input{width:100%; padding:12px 14px; border-radius:10px; border:1px solid rgba(255,255,255,0.04); background:transparent; color:#fff}
+
+    /* modal */
+    .modal{position:fixed; inset:0; display:none; align-items:center; justify-content:center; background:rgba(0,0,0,0.6); z-index:60}
+    .modal.open{display:flex}
+    .modal .panel{width:min(900px,94%); background:#000; border-radius:12px; overflow:hidden}
+    .modal .panel iframe{width:100%; height:500px; border:0}
+    .close{position:absolute; right:18px; top:14px; background:rgba(255,255,255,0.06); border-radius:8px; padding:6px 8px; cursor:pointer}
+
+    /* small helpers */
+    .muted{color:var(--muted); font-size:13px}
+    .pill{background:rgba(255,255,255,0.04); padding:6px 8px; border-radius:10px; font-size:13px}
+
+    /* scrollbar nicer */
+    .cards::-webkit-scrollbar{height:10px}
+    .cards::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.06); border-radius:999px}
+
+    footer{margin-top:26px; color:var(--muted); font-size:13px; text-align:center}
+  </style>
+</head>
+<body>
+  <div class="site">
+    <header>
+      <div class="brand">
+        <div class="logo">
+          <div class="badge">SF</div>
+          <div>
+            <h1>StreamFlow</h1>
+            <div class="muted">A demo UI — not affiliated with any service</div>
+          </div>
+        </div>
+      </div>
+      <nav>
+        <a href="#">Home</a>
+        <a href="#">TV Shows</a>
+        <a href="#">Movies</a>
+        <a class="cta" id="signin">Sign in</a>
+      </nav>
+    </header>
+
+    <section class="hero" role="region" aria-label="Featured">
+      <div class="meta">
+        <h2>Midnight City: Neon Nights</h2>
+        <p class="muted">An atmospheric cyber-noir on the edge of tomorrow — visually bold, story-first, with a killer synth score.</p>
+        <div class="hero-actions">
+          <button class="btn play" data-trailer="https://www.youtube.com/embed/2Xc9gXyf2G4?autoplay=1">▶ Play Trailer</button>
+          <button class="btn" id="add-watch">+ My List</button>
+        </div>
+      </div>
+    </section>
+
+    <div class="toolbar">
+      <div class="search">
+        <input id="q" placeholder="Search titles, actors, genres..." aria-label="Search" />
+      </div>
+      <div class="pill">HD</div>
+    </div>
+
+    <!-- rows -->
+    <div id="catalog"></div>
+
+    <footer>Made with ♥ — single-file demo. Save as <code>netflix-clone.html</code> and open in your browser.</footer>
+  </div>
+
+  <!-- modal for trailer -->
+  <div class="modal" id="modal" role="dialog" aria-modal="true">
+    <div class="panel">
+      <button class="close" id="close">✕</button>
+      <iframe id="player" src="" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen title="Trailer"></iframe>
+    </div>
+  </div>
+
+  <script>
+    // Sample data — replace or expand with your own JSON
+    const movies = [
+      {id:1,title:'Midnight City: Neon Nights',img:'https://images.unsplash.com/photo-1507608869274-8a5f3b0f6f50?q=80&w=800&auto=format&fit=crop', trailer:'https://www.youtube.com/embed/2Xc9gXyf2G4'},
+      {id:2,title:'Island of Echoes',img:'https://images.unsplash.com/photo-1502082553048-f009c37129b9?q=80&w=800&auto=format&fit=crop', trailer:'https://www.youtube.com/embed/dQw4w9WgXcQ'},
+      {id:3,title:'The Long Drift',img:'https://images.unsplash.com/photo-1517604931442-3d5d7b0d9f4b?q=80&w=800&auto=format&fit=crop', trailer:'https://www.youtube.com/embed/dQw4w9WgXcQ'},
+      {id:4,title:'Carbon Skies',img:'https://images.unsplash.com/photo-1497005367839-6e852de72767?q=80&w=800&auto=format&fit=crop', trailer:'https://www.youtube.com/embed/dQw4w9WgXcQ'},
+      {id:5,title:'Paper Planes',img:'https://images.unsplash.com/photo-1515879218367-8466d910aaa4?q=80&w=800&auto=format&fit=crop', trailer:'https://www.youtube.com/embed/dQw4w9WgXcQ'},
+      {id:6,title:'Rogue Signal',img:'https://images.unsplash.com/photo-1526772662000-3f88f10405ff?q=80&w=800&auto=format&fit=crop', trailer:'https://www.youtube.com/embed/dQw4w9WgXcQ'},
+    ];
+
+    const catalog = document.getElementById('catalog');
+    const rows = [
+      {title:'Trending now', ids:[1,2,3,4]},
+      {title:'Top picks for you', ids:[3,1,5,2]},
+      {title:'New releases', ids:[6,4,5,1]},
+    ];
+
+    function renderCatalog(filter = ''){
+      catalog.innerHTML = '';
+      rows.forEach(row=>{
+        const container = document.createElement('section');
+        container.className='row';
+        container.innerHTML = `<h3>${row.title}</h3><div class='cards' role='list'></div>`;
+        const cards = container.querySelector('.cards');
+        row.ids.forEach(id=>{
+          const m = movies.find(x=>x.id===id);
+          if(!m) return;
+          if(filter && !m.title.toLowerCase().includes(filter.toLowerCase())) return;
+          const card = document.createElement('div'); card.className='card'; card.tabIndex=0; card.role='listitem';
+          card.innerHTML = `<img src='${m.img}' alt='Poster: ${m.title}' /><div class='title'>${m.title}</div>`;
+          card.addEventListener('click', ()=> openTrailer(m.trailer));
+          card.addEventListener('keypress', (e)=>{ if(e.key==='Enter') openTrailer(m.trailer)});
+          cards.appendChild(card);
+        });
+        catalog.appendChild(container);
+      });
+    }
+
+    // initial render
+    renderCatalog();
+
+    // search
+    const q = document.getElementById('q');
+    q.addEventListener('input', ()=> renderCatalog(q.value));
+
+    // modal play
+    const modal = document.getElementById('modal');
+    const player = document.getElementById('player');
+    const close = document.getElementById('close');
+    function openTrailer(url){
+      player.src = url + '?autoplay=1&rel=0';
+      modal.classList.add('open');
+      document.body.style.overflow='hidden';
+    }
+    function closeTrailer(){
+      modal.classList.remove('open');
+      player.src='';
+      document.body.style.overflow='auto';
+    }
+    close.addEventListener('click', closeTrailer);
+    modal.addEventListener('click', (e)=>{ if(e.target===modal) closeTrailer(); });
+
+    // hero play button
+    document.querySelectorAll('.play').forEach(btn=>{
+      btn.addEventListener('click', ()=> openTrailer(btn.dataset.trailer));
+    });
+
+    // signin quick demo
+    document.getElementById('signin').addEventListener('click', ()=> alert('This is a demo UI. Add auth with Firebase / Auth0 or your backend.'));
+
+    // accessibility: trap focus inside modal when open (basic)
+    document.addEventListener('keydown', (e)=>{
+      if(e.key==='Escape' && modal.classList.contains('open')) closeTrailer();
+    });
+
+  </script>
+</body>
+</html>
