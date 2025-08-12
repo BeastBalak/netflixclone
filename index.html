@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>StreamFlow — Netflix-style Clone (Demo)</title>
-  <meta name="description" content="A lightweight single-file Netflix-style UI demo built with HTML/CSS/JS." />
+  <title>BeastBalak — Netflix-style Clone (Demo)</title>
+  <meta name="description" content="A lightweight single-file Netflix-style UI demo themed for BeastBalak's YouTube channel." />
   <style>
     :root{
       --bg:#0b0b0c; --card:#141416; --muted:#9aa0a6; --accent:#e50914; --glass:rgba(255,255,255,0.04);
@@ -20,26 +20,21 @@
       line-height:1.3;
     }
 
-    /* page container */
-    .site{
-      max-width:var(--maxw); margin:24px auto; padding:18px; 
-    }
+    .site{max-width:var(--maxw); margin:24px auto; padding:18px;}
 
-    /* header */
     header{display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:18px}
     .brand{display:flex; align-items:center; gap:12px}
     .logo{display:flex; align-items:center; gap:10px}
-    .logo .badge{width:44px;height:28px;background:var(--accent);border-radius:4px;display:flex;align-items:center;justify-content:center;font-weight:700}
+    .logo img{width:44px;height:44px;border-radius:50%;}
     .logo h1{font-size:18px;margin:0}
 
     nav{display:flex;gap:14px; align-items:center}
     nav a{color:var(--muted); font-size:14px; text-decoration:none}
     .cta{background:var(--accent); color:white; padding:8px 12px; border-radius:8px; font-weight:600; text-decoration:none}
 
-    /* hero */
     .hero{
       position:relative; border-radius:14px; overflow:hidden; min-height:320px; display:flex; align-items:flex-end; padding:28px;
-      background-image:linear-gradient(rgba(0,0,0,0.25), rgba(0,0,0,0.65)), url('https://images.unsplash.com/photo-1505685296765-3a2736de412f?q=80&w=1600&auto=format&fit=crop&ixlib=rb-4.0.3&s=');
+      background-image:linear-gradient(rgba(0,0,0,0.25), rgba(0,0,0,0.65)), url('https://yt3.googleusercontent.com/ytc/AIdro_n-bbalak-channel-banner');
       background-size:cover; background-position:center;
       margin-bottom:26px;
     }
@@ -51,7 +46,6 @@
     .btn:hover{transform:translateY(-3px)}
     .btn.play{background:white; color:#000}
 
-    /* rows */
     .row{margin-bottom:22px}
     .row h3{margin:6px 0 12px 4px}
     .cards{display:flex; gap:12px; overflow:auto; padding-bottom:6px}
@@ -60,30 +54,25 @@
     .card .title{padding:8px; font-weight:600; font-size:14px}
     .card:hover{transform:translateY(-8px); box-shadow:0 18px 40px rgba(0,0,0,0.7)}
 
-    /* small screens */
     @media (max-width:720px){
       .hero{min-height:240px;padding:18px}
       .card img{height:180px}
       .logo h1{font-size:16px}
     }
 
-    /* search + filter */
     .toolbar{display:flex; gap:12px; align-items:center; margin-bottom:12px}
     .search{flex:1}
     .search input{width:100%; padding:12px 14px; border-radius:10px; border:1px solid rgba(255,255,255,0.04); background:transparent; color:#fff}
 
-    /* modal */
     .modal{position:fixed; inset:0; display:none; align-items:center; justify-content:center; background:rgba(0,0,0,0.6); z-index:60}
     .modal.open{display:flex}
     .modal .panel{width:min(900px,94%); background:#000; border-radius:12px; overflow:hidden}
     .modal .panel iframe{width:100%; height:500px; border:0}
     .close{position:absolute; right:18px; top:14px; background:rgba(255,255,255,0.06); border-radius:8px; padding:6px 8px; cursor:pointer}
 
-    /* small helpers */
     .muted{color:var(--muted); font-size:13px}
     .pill{background:rgba(255,255,255,0.04); padding:6px 8px; border-radius:10px; font-size:13px}
 
-    /* scrollbar nicer */
     .cards::-webkit-scrollbar{height:10px}
     .cards::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.06); border-radius:999px}
 
@@ -95,129 +84,70 @@
     <header>
       <div class="brand">
         <div class="logo">
-          <div class="badge">SF</div>
+          <img src="https://yt3.googleusercontent.com/ytc/AIdro_kp5-BeastBalak-profile" alt="BeastBalak Logo">
           <div>
-            <h1>StreamFlow</h1>
-            <div class="muted">A demo UI — not affiliated with any service</div>
+            <h1>BeastBalak</h1>
+            <div class="muted">Official YouTube Channel Showcase</div>
           </div>
         </div>
       </div>
       <nav>
-        <a href="#">Home</a>
-        <a href="#">TV Shows</a>
-        <a href="#">Movies</a>
-        <a class="cta" id="signin">Sign in</a>
+        <a href="https://www.youtube.com/@beastbalak" target="_blank">YouTube</a>
+        <a href="#">Videos</a>
+        <a href="#">Playlists</a>
+        <a class="cta" id="subscribe">Subscribe</a>
       </nav>
     </header>
 
-    <section class="hero" role="region" aria-label="Featured">
+    <section class="hero">
       <div class="meta">
-        <h2>Midnight City: Neon Nights</h2>
-        <p class="muted">An atmospheric cyber-noir on the edge of tomorrow — visually bold, story-first, with a killer synth score.</p>
+        <h2>Welcome to BeastBalak</h2>
+        <p class="muted">A hub for creativity, entertainment, and storytelling — straight from my YouTube channel.</p>
         <div class="hero-actions">
-          <button class="btn play" data-trailer="https://www.youtube.com/embed/2Xc9gXyf2G4?autoplay=1">▶ Play Trailer</button>
-          <button class="btn" id="add-watch">+ My List</button>
+          <a class="btn play" href="https://www.youtube.com/@beastbalak" target="_blank">▶ Visit Channel</a>
         </div>
       </div>
     </section>
 
     <div class="toolbar">
       <div class="search">
-        <input id="q" placeholder="Search titles, actors, genres..." aria-label="Search" />
+        <input id="q" placeholder="Search videos..." />
       </div>
-      <div class="pill">HD</div>
+      <div class="pill">YT</div>
     </div>
 
-    <!-- rows -->
     <div id="catalog"></div>
 
-    <footer>Made with ♥ — single-file demo. Save as <code>netflix-clone.html</code> and open in your browser.</footer>
-  </div>
-
-  <!-- modal for trailer -->
-  <div class="modal" id="modal" role="dialog" aria-modal="true">
-    <div class="panel">
-      <button class="close" id="close">✕</button>
-      <iframe id="player" src="" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen title="Trailer"></iframe>
-    </div>
+    <footer>Made with ♥ for BeastBalak — Save as <code>beastbalak-clone.html</code> and open in your browser.</footer>
   </div>
 
   <script>
-    // Sample data — replace or expand with your own JSON
-    const movies = [
-      {id:1,title:'Midnight City: Neon Nights',img:'https://images.unsplash.com/photo-1507608869274-8a5f3b0f6f50?q=80&w=800&auto=format&fit=crop', trailer:'https://www.youtube.com/embed/2Xc9gXyf2G4'},
-      {id:2,title:'Island of Echoes',img:'https://images.unsplash.com/photo-1502082553048-f009c37129b9?q=80&w=800&auto=format&fit=crop', trailer:'https://www.youtube.com/embed/dQw4w9WgXcQ'},
-      {id:3,title:'The Long Drift',img:'https://images.unsplash.com/photo-1517604931442-3d5d7b0d9f4b?q=80&w=800&auto=format&fit=crop', trailer:'https://www.youtube.com/embed/dQw4w9WgXcQ'},
-      {id:4,title:'Carbon Skies',img:'https://images.unsplash.com/photo-1497005367839-6e852de72767?q=80&w=800&auto=format&fit=crop', trailer:'https://www.youtube.com/embed/dQw4w9WgXcQ'},
-      {id:5,title:'Paper Planes',img:'https://images.unsplash.com/photo-1515879218367-8466d910aaa4?q=80&w=800&auto=format&fit=crop', trailer:'https://www.youtube.com/embed/dQw4w9WgXcQ'},
-      {id:6,title:'Rogue Signal',img:'https://images.unsplash.com/photo-1526772662000-3f88f10405ff?q=80&w=800&auto=format&fit=crop', trailer:'https://www.youtube.com/embed/dQw4w9WgXcQ'},
+    const videos = [
+      {id:1,title:'My First Video',img:'https://img.youtube.com/vi/dQw4w9WgXcQ/hqdefault.jpg', link:'https://www.youtube.com/watch?v=dQw4w9WgXcQ'},
+      {id:2,title:'Behind the Scenes',img:'https://img.youtube.com/vi/2Xc9gXyf2G4/hqdefault.jpg', link:'https://www.youtube.com/watch?v=2Xc9gXyf2G4'}
     ];
 
     const catalog = document.getElementById('catalog');
-    const rows = [
-      {title:'Trending now', ids:[1,2,3,4]},
-      {title:'Top picks for you', ids:[3,1,5,2]},
-      {title:'New releases', ids:[6,4,5,1]},
-    ];
-
-    function renderCatalog(filter = ''){
+    function renderCatalog(filter=''){
       catalog.innerHTML = '';
-      rows.forEach(row=>{
-        const container = document.createElement('section');
-        container.className='row';
-        container.innerHTML = `<h3>${row.title}</h3><div class='cards' role='list'></div>`;
-        const cards = container.querySelector('.cards');
-        row.ids.forEach(id=>{
-          const m = movies.find(x=>x.id===id);
-          if(!m) return;
-          if(filter && !m.title.toLowerCase().includes(filter.toLowerCase())) return;
-          const card = document.createElement('div'); card.className='card'; card.tabIndex=0; card.role='listitem';
-          card.innerHTML = `<img src='${m.img}' alt='Poster: ${m.title}' /><div class='title'>${m.title}</div>`;
-          card.addEventListener('click', ()=> openTrailer(m.trailer));
-          card.addEventListener('keypress', (e)=>{ if(e.key==='Enter') openTrailer(m.trailer)});
-          cards.appendChild(card);
-        });
-        catalog.appendChild(container);
+      const container = document.createElement('section');
+      container.className='row';
+      container.innerHTML = `<h3>Latest from BeastBalak</h3><div class='cards'></div>`;
+      const cards = container.querySelector('.cards');
+      videos.forEach(v=>{
+        if(filter && !v.title.toLowerCase().includes(filter.toLowerCase())) return;
+        const card = document.createElement('div');
+        card.className='card';
+        card.innerHTML = `<img src='${v.img}' alt='${v.title}' /><div class='title'>${v.title}</div>`;
+        card.addEventListener('click', ()=> window.open(v.link,'_blank'));
+        cards.appendChild(card);
       });
+      catalog.appendChild(container);
     }
-
-    // initial render
     renderCatalog();
 
-    // search
-    const q = document.getElementById('q');
-    q.addEventListener('input', ()=> renderCatalog(q.value));
-
-    // modal play
-    const modal = document.getElementById('modal');
-    const player = document.getElementById('player');
-    const close = document.getElementById('close');
-    function openTrailer(url){
-      player.src = url + '?autoplay=1&rel=0';
-      modal.classList.add('open');
-      document.body.style.overflow='hidden';
-    }
-    function closeTrailer(){
-      modal.classList.remove('open');
-      player.src='';
-      document.body.style.overflow='auto';
-    }
-    close.addEventListener('click', closeTrailer);
-    modal.addEventListener('click', (e)=>{ if(e.target===modal) closeTrailer(); });
-
-    // hero play button
-    document.querySelectorAll('.play').forEach(btn=>{
-      btn.addEventListener('click', ()=> openTrailer(btn.dataset.trailer));
-    });
-
-    // signin quick demo
-    document.getElementById('signin').addEventListener('click', ()=> alert('This is a demo UI. Add auth with Firebase / Auth0 or your backend.'));
-
-    // accessibility: trap focus inside modal when open (basic)
-    document.addEventListener('keydown', (e)=>{
-      if(e.key==='Escape' && modal.classList.contains('open')) closeTrailer();
-    });
-
+    document.getElementById('q').addEventListener('input', e=> renderCatalog(e.target.value));
+    document.getElementById('subscribe').addEventListener('click', ()=> window.open('https://www.youtube.com/@beastbalak?sub_confirmation=1','_blank'));
   </script>
 </body>
 </html>
